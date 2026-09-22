@@ -1,0 +1,2 @@
+# vandrevala_copilot
+[![Gradio App Deployment](https://github.com/Vandrevala-Foundation-Colab/vf_copilot/actions/workflows/gradio_deploy.yml/badge.svg)](https://github.com/Vandrevala-Foundation-Colab/vf_copilot/actions/workflows/gradio_deploy.yml)

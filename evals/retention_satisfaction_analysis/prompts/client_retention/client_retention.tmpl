@@ -1,0 +1,41 @@
+## Instructions
+You are a conversation-level evaluator for mental health counseling sessions. Your task is to read the full conversation between a client and a counselor and determine whether the client remained engaged through to the end of the conversation or stopped responding before a natural conclusion was reached.
+
+Mark `true` if the client remained through to a natural end of the conversation, even if the ending was brief or abrupt but mutual. Mark `false` if the client stopped responding mid-conversation without a clear goodbye, closure, or acknowledgment. Use `"NA"` only if the conversation is too short or fragmentary to make a determination.
+
+## Important Notes
+- A client who says goodbye, thanks the counselor, or acknowledges the end of the session counts as `true` even if the conversation was short.
+- A client who stops responding after being asked a question, with no further messages, counts as `false`.
+- If the counselor ends the conversation due to not receiving a response from the client, mark `false`.
+- If the counselor sends a closing message but the client attempts to re-engage, mark `true` — the client remained engaged even though the conversation was ended.
+- The client does not need to acknowledge the counselor's final closing message to be marked `true`. Counselor closing messages are often templated (e.g. informing the client when they can reach out again) and do not require a client response.
+
+## Rubric
+
+- **CR1**: The client remained engaged through to a natural conclusion of the conversation (T/F/NA)
+
+## OUTPUT FORMAT
+
+Return your evaluation in the following structured JSON format:
+
+```json
+{{
+  "CR1": true,
+  "CR1_justification": "The client said 'thank you, I feel better now' in their final message, indicating they stayed through to a natural close.",
+  "CR1_evidence": [
+    "Client: than now",k you, I feel better
+    "Counselor: I'm glad I could help. Take care of yourself."
+  ]
+}}
+```
+
+Where:
+	•	`CR1` is `true`, `false`, or `"NA"`.
+	•	`CR1_justification` is a 1–2 sentence explanation citing specific evidence from the conversation.
+	•	`CR1_evidence` is a list of exact verbatim quotes from the final exchanges of the conversation that were used to make this determination. Quote message text exactly as it appears.
+
+—
+
+Now, evaluate the following conversation and provide your assessment.
+
+{note}

@@ -1,0 +1,53 @@
+## Instructions
+You are a conversation-level evaluator for mental health counseling sessions. Your task is to read the full conversation between a client and a counselor and produce two scores: a binary satisfaction score (CS1) and a 1–5 experience scale score (CS2).
+
+Mark `CS1` as `true` if the client expressed satisfaction or gratitude at any point in the conversation, even if brief or subtle. Mark `false` if no such expression is present. Use `"NA"` only if the conversation is too short or fragmentary to make a determination.
+
+## Important Notes
+- Explicit expressions count: "thank you", "this helped", "I feel better", "I appreciate it".
+- Implicit expressions also count: a clear positive emotional shift in the client's final messages, expressions of relief, or statements of intent to act on the counselor's support.
+- Perfunctory or ambiguous acknowledgments (e.g., "ok", "sure") do not count as satisfaction.
+- Gratitude directed at the platform rather than the conversation (e.g., "thanks for having this service") does count.
+
+—
+
+## Rubric
+
+- **CS1**: The client expressed satisfaction, gratitude, or positive acknowledgment of the support received at any point in the conversation (T/F/NA)
+
+- **CS2**: Overall client experience on a 1–5 scale:
+  - `1` — Strong dissatisfaction or negative experience: client expresses frustration, distress about the conversation itself, or leaves worse off.
+  - `2` — Mild or moderate dissatisfaction: client is underwhelmed, disengaged, or subtly negative about the support received.
+  - `3` — Neutral experience: no clear positive or negative expression about the support; client neither thanks nor complains.
+  - `4` — Moderate satisfaction or gratitude: client expresses appreciation or positive acknowledgment, even if brief (e.g. "thank you", "this helped").
+  - `5` — Strong or effusive satisfaction: client expresses detailed, heartfelt, or emphatic gratitude or satisfaction about the conversation as a whole (e.g. "I feel so much better after talking to you", "I really appreciate everything you shared").
+
+## OUTPUT FORMAT
+
+Return your evaluation in the following structured JSON format:
+
+```json
+{{
+  "CS1": true,
+  "CS1_justification": "The client explicitly thanked the counselor and said the conversation helped them feel less alone, indicating clear satisfaction with the support received.",
+  "CS1_evidence": [
+    "Client: I really appreciate you listening to me",
+    "Client: I feel a little less alone now",
+    "Counselor: I'm really glad you reached out today."
+  ],
+  "CS2": 5,
+  "CS2_justification": "The client expressed detailed and heartfelt gratitude, stating the conversation helped them feel less alone — indicating a strong positive experience."
+}}
+```
+
+Where:
+	•	`CS1` is `true`, `false`, or `"NA"`.
+	•	`CS1_justification` is a 1–2 sentence explanation citing specific evidence from the conversation.
+	•	`CS1_evidence` is a list of exact verbatim quotes from the conversation that were used to make this determination. Quote message text exactly as it appears.
+	•	`CS2` is an integer from 1 to 5.
+	•	`CS2_justification` is a 1–2 sentence explanation for the score assigned.
+
+
+Now, evaluate the following conversation and provide your assessment.
+
+{note}

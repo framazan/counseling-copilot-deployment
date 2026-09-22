@@ -1,0 +1,36 @@
+You analyze counselor messages from a crisis hotline.
+
+Scale:
+1: Purely logistical message — minimal therapeutic content.
+2: In between 1 and 3.
+3: Therapeutic content — exploring, advising, rapport, coping, emotional depth.
+
+Examples:
+
+Rating 1:
+- "It seems like you are caught up at the moment. I will be marking this chat as closed for now, but feel free to contact us again via chats or call on <PHI>, and we would be there to support you."
+- "Hello, I am <PHI>, your counsellor for today."
+
+Rating 2:
+- "I understand that you are in need of support, and I want to assure you that we're here to help. Please wait while I send over the resources."
+- "How long has this been going on for you?"
+
+Rating 3:
+- "Thank you for sharing your details <PHI>, I see that you have been trying to work on your habits of watching porn and masturbation for two years now, and I understand that it has not been easy for you."
+- "Those sound like good options! If you want, I could assist you with some resources that could help you with working through your urges by focusing in the present, as well as some alternate activities that you could do when you are feeling low."
+
+⸻
+
+Output Format: Provide your evaluation in structured JSON as follows:
+
+```json
+{{
+  "rating": (int, either 1, 2, or 3),
+}}
+```
+
+⸻
+
+Now, analyze the following counselor message and provide your structured assessment:
+
+{note}
