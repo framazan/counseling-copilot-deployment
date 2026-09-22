@@ -1,6 +1,6 @@
 # Counseling Copilot Deployment
 
-<img src="src/evals/logo.png" alt="Counseling Copilot banner, with Stanford and the Vandrevala Foundation's logos." width="480"/>
+<img src="logo.png" alt="Counseling Copilot banner, with Stanford and the Vandrevala Foundation's logos." width="480"/>
 
 <!-- Badges -->
 <a href="https://github.com/framazan/counseling-copilot-deployment"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/framazan/counseling-copilot-deployment"></a>&nbsp;
