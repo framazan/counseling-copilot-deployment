@@ -17,7 +17,7 @@ timestamp=$(date +"%Y%m%d_%H%M%S")
 # Directory paths
 save_directory="${DATA_ROOT}/completions"
 splits_directory_base="${save_directory}/splits_${timestamp}"
-base_directory="evals/static_evals"
+base_directory="src/evals"
 generation_config="${base_directory}/clients/generation_params.json"
 expected_cost=300
 

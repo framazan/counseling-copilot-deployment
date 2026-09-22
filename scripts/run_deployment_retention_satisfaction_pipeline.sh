@@ -1,14 +1,4 @@
 #!/bin/bash
-# Runs client retention (CR1) and client satisfaction (CS1/CS2) prompts on the
-# full deployment dataset: deployment_20260921.parquet
-#
-# Run from repo root:
-#   bash evals/retention_satisfaction_analysis/run_deployment_retention_satisfaction_pipeline.sh
-#
-# Steps:
-#   1. Build prompted JSONL datasets (CR1 and CS1) directly from parquet
-#   2. Run LLM inference via OpenAI Batch API
-#   3. Parse completions and write updated parquet (no intermediate CSVs)
 
 set -e
 
@@ -19,14 +9,14 @@ if [ -z "$OPENAI_API_KEY" ] && [ -f "$HOME/.zshrc" ]; then
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-DATA_DIR="$SCRIPT_DIR/data"
-PROMPTED_DIR="$REPO_ROOT/evals/data/prompted"
-COMPLETIONS_DIR="$REPO_ROOT/evals/data/llm_inference/completions"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+DATA_DIR="$REPO_ROOT/data"
+PROMPTED_DIR="$REPO_ROOT/data/prompted"
+COMPLETIONS_DIR="$REPO_ROOT/data/llm_inference/completions"
 DATE=$(date +%Y%m%d)
 PYTHON="$HOME/.pyenv/versions/3.11.0/bin/python"
 
-export DATA_ROOT="$REPO_ROOT/evals/data/llm_inference"
+export DATA_ROOT="$REPO_ROOT/data/llm_inference"
 
 # Force 'python' to resolve to 3.11.0 regardless of active virtualenv
 TMPBIN=$(mktemp -d)
@@ -35,7 +25,7 @@ export PATH="$TMPBIN:$PATH"
 export VIRTUAL_ENV=""
 unset PYTHONHOME
 
-export PYTHONPATH="$REPO_ROOT/evals:$PYTHONPATH"
+export PYTHONPATH="$REPO_ROOT/src:$PYTHONPATH"
 
 SOURCE_PARQUET="$REPO_ROOT/deployment_20260921.parquet"
 SPLITS=50
@@ -49,18 +39,18 @@ fi
 # ── Step 1: Build prompted JSONL datasets directly from parquet ───────────────
 echo "=== Step 1: Building prompted datasets ==="
 
-$PYTHON "$REPO_ROOT/evals/static_evals/build_prompted_datasets.py" \
+$PYTHON "$REPO_ROOT/src/evals/build_prompted_datasets.py" \
   -f "$SOURCE_PARQUET" \
-  -p "$SCRIPT_DIR/prompts/client_retention" \
+  -p "$REPO_ROOT/prompts/client_retention" \
   -o "$PROMPTED_DIR" \
   -n deployment_client_retention \
   -fmt messages \
   -c convo \
   --id_column conversation_uid
 
-$PYTHON "$REPO_ROOT/evals/static_evals/build_prompted_datasets.py" \
+$PYTHON "$REPO_ROOT/src/evals/build_prompted_datasets.py" \
   -f "$SOURCE_PARQUET" \
-  -p "$SCRIPT_DIR/prompts/client_satisfaction" \
+  -p "$REPO_ROOT/prompts/client_satisfaction" \
   -o "$PROMPTED_DIR" \
   -n deployment_client_satisfaction \
   -fmt messages \
@@ -86,7 +76,7 @@ check_line_count() {
   echo "  $label: $actual / $expected rows complete."
 }
 
-bash "$REPO_ROOT/evals/static_evals/run_llm_client.sh" \
+bash "$SCRIPT_DIR/run_llm_client.sh" \
   "$PROMPTED_DIR/deployment_client_retention_${DATE}.jsonl" \
   "gpt-4.1" "openai-batch" $SPLITS 500 \
   "https://api.openai.com/v1/chat/completions"
@@ -94,7 +84,7 @@ bash "$REPO_ROOT/evals/static_evals/run_llm_client.sh" \
 CR_COMPLETIONS=$(ls -t "$COMPLETIONS_DIR"/final_merged_gpt-4.1_max500_*.jsonl 2>/dev/null | head -1)
 check_line_count "CR1" "$PROMPTED_DIR/deployment_client_retention_${DATE}.jsonl" "$CR_COMPLETIONS"
 
-bash "$REPO_ROOT/evals/static_evals/run_llm_client.sh" \
+bash "$SCRIPT_DIR/run_llm_client.sh" \
   "$PROMPTED_DIR/deployment_client_satisfaction_${DATE}.jsonl" \
   "gpt-4.1" "openai-batch" $SPLITS 500 \
   "https://api.openai.com/v1/chat/completions"
@@ -114,7 +104,7 @@ if [ -z "$CS_COMPLETIONS" ]; then
   exit 1
 fi
 
-$PYTHON "$SCRIPT_DIR/parse_deployment_retention_satisfaction_results.py" \
+$PYTHON "$REPO_ROOT/src/evals/parse_deployment_retention_satisfaction_results.py" \
   --cr_completions "$CR_COMPLETIONS" \
   --cs_completions "$CS_COMPLETIONS"
 

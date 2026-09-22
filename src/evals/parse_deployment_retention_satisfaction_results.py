@@ -1,16 +1,3 @@
-"""
-Parses LLM completions directly from JSONL files (no intermediate CSV), joins all
-original parquet columns, and writes an updated parquet with CR1/CS1/CS2 appended.
-
-Input:
-  --cr_completions  path to final_merged_gpt-4.1_*.jsonl from the CR1 inference run
-  --cs_completions  path to final_merged_gpt-4.1_*.jsonl from the CS1/CS2 inference run
-  deployment_full_dataset_20260506.parquet  (hardcoded path, joined on conversation_uid)
-
-Output:
-  data/deployment_full_dataset_20260510.parquet  (original parquet + LLM columns)
-"""
-
 import sys
 import json
 import re
@@ -18,8 +5,8 @@ import argparse
 import pandas as pd
 from pathlib import Path
 
-sys.path.append(str(Path(__file__).parent.parent.parent / "evals"))
-from static_evals.extract_content_from_llm_completion import parse_jsonl
+sys.path.append(str(Path(__file__).parent.parent.parent))
+from src.evals.extract_content_from_llm_completion import parse_jsonl
 
 DATA_DIR = Path(__file__).parent / "data"
 PARQUET_PATH = Path(__file__).parent.parent.parent / "deployment_20260921.parquet"
