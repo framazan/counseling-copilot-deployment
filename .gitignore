@@ -216,3 +216,4 @@ lhs/data/
 *.sha256
 *.parquet
 *.csv
+Stanford_Emp_Data.csv
