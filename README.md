@@ -1,4 +1,4 @@
-# Counseling Copilot Deployment
+# Deployment and evaluation of an AI Copilot for mental health crisis counseling
 
 <img src="logo.png" alt="Counseling Copilot banner, with Stanford and the Vandrevala Foundation's logos." width="480"/>
 
@@ -7,7 +7,7 @@
 <a><img alt="GitHub contributors" src="https://img.shields.io/badge/contributors-20-brightgreen"></a>&nbsp;
 <a href="https://github.com/framazan/counseling-copilot-deployment/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/framazan/counseling-copilot-deployment?color=blue"></a>
 
-**Counseling Copilot Deployment** is the repository for the deployment and evaluation of a large language model copilot that drafts responses for counselors during live WhatsApp-based crisis conversations at a national mental health helpline in India.
+This is the repository for the deployment and evaluation of a large language model copilot that drafts responses for counselors during live WhatsApp-based crisis conversations at a national mental health helpline in India.
 
 The repository is organized into the following key components:
 
